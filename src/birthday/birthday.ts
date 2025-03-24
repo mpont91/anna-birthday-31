@@ -10,6 +10,7 @@ import { createAmbientLight, createLight } from './light.ts'
 import { createTable } from './table.ts'
 import { createCake } from './cake.ts'
 import { createCandles } from './candle.ts'
+import { createBalloon31 } from './balloon.ts'
 
 export class Birthday {
   private scene: Scene = new THREE.Scene()
@@ -28,12 +29,13 @@ export class Birthday {
     const table = createTable()
     const cake = createCake()
     const candles = createCandles(this.flameMaterials)
+    const balloon = createBalloon31()
 
     this.scene.add(light)
     this.scene.add(table)
     this.scene.add(cake)
-
     cake.add(candles)
+    this.scene.add(balloon)
 
     this.animate(renderer, controls)
 

@@ -39,20 +39,18 @@ export function createTable() {
 
 function createTextLabel(): THREE.Mesh {
   const text: string = '❤️ Per molts anys!️ ❤️'
-  const years: string = '31'
   const name: string = '🥰 Anna 🥰'
 
   const canvas = document.createElement('canvas')
   canvas.width = 900
-  canvas.height = 600
+  canvas.height = 400
   const ctx = canvas.getContext('2d')!
   ctx.fillStyle = '#000000'
   ctx.font = 'bold 64px Arial'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillText(text, canvas.width / 2, canvas.height / 2)
-  ctx.fillText(years, canvas.width / 2, canvas.height / 2 + 100)
-  ctx.fillText(name, canvas.width / 2, canvas.height / 2 + 200)
+  ctx.fillText(name, canvas.width / 2, canvas.height / 2 + 100)
 
   const texture = new CanvasTexture(canvas)
   const material = new MeshBasicMaterial({ map: texture, transparent: true })
