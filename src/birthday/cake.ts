@@ -6,9 +6,15 @@ const middleRadius = 2 // Middle radius of the cake
 const middleHeight = 1.25 // Height of the cake middle
 const topRadius = 1.5 // Top radius of the cake
 const topHeight = 1 // Height of the cake top
+const chocolateDarkImageUrl: string = './chocolate-dark.png'
+const chocolateBrownImageUrl: string = './chocolate-brown.png'
+const chocolateWhiteImageUrl: string = './chocolate-white.png'
 
 export function createCake() {
   const cakeGroup = new THREE.Group()
+
+  const textureLoader = new THREE.TextureLoader()
+  const baseTexture = textureLoader.load(chocolateWhiteImageUrl)
 
   const baseGeometry = new THREE.CylinderGeometry(
     baseRadius,
@@ -16,7 +22,10 @@ export function createCake() {
     baseHeight,
     32,
   )
-  const baseMaterial = new THREE.MeshPhongMaterial({ color: 0xfff5ee })
+  const baseMaterial = new THREE.MeshPhongMaterial({
+    map: baseTexture,
+    shininess: 10,
+  })
   const baseMesh = new THREE.Mesh(baseGeometry, baseMaterial)
 
   const middleGeometry = new THREE.CylinderGeometry(
@@ -25,7 +34,11 @@ export function createCake() {
     middleHeight,
     32,
   )
-  const middleMaterial = new THREE.MeshPhongMaterial({ color: 0xfffafa })
+  const middleTexture = textureLoader.load(chocolateBrownImageUrl)
+  const middleMaterial = new THREE.MeshPhongMaterial({
+    map: middleTexture,
+    shininess: 10,
+  })
   const middleMesh = new THREE.Mesh(middleGeometry, middleMaterial)
   middleMesh.position.y = baseHeight / 2 + middleHeight / 2
 
@@ -35,7 +48,11 @@ export function createCake() {
     topHeight,
     32,
   )
-  const topMaterial = new THREE.MeshPhongMaterial({ color: 0xf0ffff })
+  const topTexture = textureLoader.load(chocolateDarkImageUrl)
+  const topMaterial = new THREE.MeshPhongMaterial({
+    map: topTexture,
+    shininess: 10,
+  })
   const topMesh = new THREE.Mesh(topGeometry, topMaterial)
   topMesh.position.y = baseHeight / 2 + middleHeight + topHeight / 2
 
