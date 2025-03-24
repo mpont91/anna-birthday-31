@@ -4,15 +4,15 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Cake } from '../cake/cake'
+import { Birthday } from '../birthday/birthday.ts'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-let cake: Cake | null = null
+let birthday: Birthday | null = null
 
 onMounted(() => {
   if (canvasRef.value) {
-    cake = new Cake(canvasRef.value)
-    cake.invoke()
+    birthday = new Birthday(canvasRef.value)
+    birthday.invoke()
   }
 })
 </script>
