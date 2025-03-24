@@ -5,7 +5,7 @@
     @click="onBlowClick"
     :disabled="isDisabled"
   >
-    Bufar les espelmes 🎈
+    Bufar 💨
   </button>
   <button
     v-if="!canBlow"
@@ -13,7 +13,7 @@
     @click="onIgniteClick"
     :disabled="isDisabled"
   >
-    Encendre les espelmes 🎈
+    Encendre 🔥
   </button>
   <canvas ref="canvasRef" class="cake-scene"></canvas>
 </template>

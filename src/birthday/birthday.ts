@@ -12,6 +12,7 @@ import { createTable } from './table.ts'
 import { createCake } from './cake.ts'
 import { createCandles } from './candle.ts'
 import { createBalloon31 } from './balloon.ts'
+import { Confetti } from './confetti.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -25,6 +26,7 @@ export class Birthday {
   private candles: THREE.Group = new THREE.Group()
   private flameMaterials: THREE.ShaderMaterial[] = []
   private balloon: THREE.Mesh = new THREE.Mesh()
+  private confetti: Confetti[] = []
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     this.camera = this.createCamera()
@@ -107,6 +109,11 @@ export class Birthday {
         material.uniforms.time.value = elapsedTime
       }
 
+      for (const explosion of this.confetti) {
+        explosion.update()
+      }
+      this.confetti = this.confetti.filter((e: Confetti) => e.isAlive())
+
       this.controls.update()
       this.renderer.render(this.scene, this.camera)
     }
@@ -121,6 +128,8 @@ export class Birthday {
   }
 
   blowOutCandles(): void {
+    this.confetti.push(new Confetti(this.scene))
+
     this.candles.children.forEach((candle): void => {
       const speed: number = 1 + Math.random() * 3
       this.extinguishCandle(candle, speed)
