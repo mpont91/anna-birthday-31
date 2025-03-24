@@ -72,7 +72,7 @@ export class Birthday {
     controls.enablePan = false
     controls.minPolarAngle = THREE.MathUtils.degToRad(60)
     controls.maxPolarAngle = THREE.MathUtils.degToRad(95)
-    controls.minDistance = 4
+    controls.minDistance = 7
     controls.maxDistance = 20
     controls.autoRotate = false
     controls.autoRotateSpeed = 1
