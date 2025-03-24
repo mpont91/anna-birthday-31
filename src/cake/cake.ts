@@ -14,7 +14,7 @@ import { fragmentShader, vertexShader } from './vertex-shader.ts'
 
 const candleRadius = 0.35 // Base radius of the candle
 const candleHeight = 3.5 // Total height of the candle
-const candleCount = 3 // Number of candles
+const candleCount = 5 // Number of candles
 
 const baseRadius = 2.5 // Base radius of the cake
 const baseHeight = 2 // Height of the cake base
@@ -42,19 +42,13 @@ export class Cake {
     const light: DirectionalLight = this.createLight()
     const table = this.createTable()
     const cake = this.createCake()
-    const candleMesh = this.createCandle()
-    this.createCandleLight(candleMesh)
+    const candles = this.createCandles()
 
     this.scene.add(light)
     this.scene.add(table)
     this.scene.add(cake)
 
-    const candles = this.createCandles(candleMesh)
     cake.add(candles)
-
-    candleMesh.scale.set(0.3, 0.3, 0.3)
-    candleMesh.castShadow = false
-    candleMesh.position.y = baseHeight / 2 + middleHeight + topHeight
 
     this.animate(renderer, controls)
 
@@ -198,14 +192,14 @@ export class Cake {
   }
 
   createCandle() {
-    var casePath = new THREE.Path()
+    const casePath = new THREE.Path()
     casePath.moveTo(0, 0)
     casePath.lineTo(0, 0)
     casePath.absarc(0, 0, candleRadius, Math.PI * 1.5, Math.PI * 2)
     casePath.lineTo(candleRadius, candleHeight) // Use baseRadius and candleHeight
-    var caseGeo = new THREE.LatheGeometry(casePath.getPoints(), 64)
-    var caseMat = new THREE.MeshStandardMaterial({ color: 0xff4500 }) // Orange-red color
-    var caseMesh = new THREE.Mesh(caseGeo, caseMat)
+    const caseGeometry = new THREE.LatheGeometry(casePath.getPoints(), 64)
+    const caseMaterial = new THREE.MeshStandardMaterial({ color: 0xff4500 }) // Orange-red color
+    const caseMesh = new THREE.Mesh(caseGeometry, caseMaterial)
     caseMesh.castShadow = true
 
     // top part of the candle
@@ -216,71 +210,78 @@ export class Cake {
     caseMesh.add(topMesh)
 
     // candlewick
-    var candlewickProfile = new THREE.Shape()
+    const candlewickProfile = new THREE.Shape()
     candlewickProfile.absarc(0, 0, 0.0625, 0, Math.PI * 2)
 
-    var candlewickCurve = new THREE.CatmullRomCurve3([
+    const candlewickCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, candleHeight - 1, 0),
       new THREE.Vector3(0, candleHeight - 0.5, -0.0625),
       new THREE.Vector3(0.25, candleHeight - 0.5, 0.125),
     ])
 
-    var candlewickGeo = new THREE.ExtrudeGeometry(candlewickProfile, {
+    const candlewickGeometry = new THREE.ExtrudeGeometry(candlewickProfile, {
       steps: 8,
       bevelEnabled: false,
       extrudePath: candlewickCurve,
     })
-    var colors: number[] = []
-    var color1 = new THREE.Color('black')
-    var color2 = new THREE.Color(0x994411)
-    var color3 = new THREE.Color(0xffff44)
-    for (let i = 0; i < candlewickGeo.attributes.position.count; i++) {
-      if (candlewickGeo.attributes.position.getY(i) < 0.4) {
+    const colors: number[] = []
+    const color1 = new THREE.Color('black')
+    const color2 = new THREE.Color(0x994411)
+    const color3 = new THREE.Color(0xffff44)
+    for (let i = 0; i < candlewickGeometry.attributes.position.count; i++) {
+      if (candlewickGeometry.attributes.position.getY(i) < 0.4) {
         color1.toArray(colors, i * 3)
       } else {
         color2.toArray(colors, i * 3)
       }
-      if (candlewickGeo.attributes.position.getY(i) < 0.15)
+      if (candlewickGeometry.attributes.position.getY(i) < 0.15)
         color3.toArray(colors, i * 3)
     }
-    candlewickGeo.setAttribute(
+    candlewickGeometry.setAttribute(
       'color',
       new THREE.BufferAttribute(new Float32Array(colors), 3),
     )
-    candlewickGeo.translate(0, 0.95, 0)
-    var candlewickMat = new THREE.MeshBasicMaterial({ vertexColors: true })
+    candlewickGeometry.translate(0, 0.95, 0)
+    const candlewickMaterial = new THREE.MeshBasicMaterial({
+      vertexColors: true,
+    })
 
-    var candlewickMesh = new THREE.Mesh(candlewickGeo, candlewickMat)
+    const candlewickMesh = new THREE.Mesh(
+      candlewickGeometry,
+      candlewickMaterial,
+    )
     caseMesh.add(candlewickMesh)
 
     return caseMesh
   }
 
-  createCandles(candleMesh: THREE.Mesh) {
+  createCandleLight(candleMesh: THREE.Mesh) {
+    const candleLight = new THREE.PointLight(0xffaa33, 1, 5, 2)
+    candleLight.position.set(0, candleHeight, 0)
+    candleLight.castShadow = true
+    candleMesh.add(candleLight)
+    const candleLight2 = new THREE.PointLight(0xffaa33, 1, 10, 2)
+    candleLight2.position.set(0, candleHeight + 1, 0)
+    candleLight2.castShadow = true
+    candleMesh.add(candleLight2)
+    candleMesh.add(this.flame())
+  }
+
+  createCandles() {
     const candleGroup = new THREE.Group()
     const radius = 1
     for (let i = 0; i < candleCount; i++) {
       const angle = (i / candleCount) * Math.PI * 2
-      const candle = candleMesh.clone()
+      const candle = this.createCandle()
       candle.position.x = Math.cos(angle) * radius
       candle.position.z = Math.sin(angle) * radius
+      candle.scale.set(0.3, 0.3, 0.3)
+      candle.castShadow = false
+      candle.position.y = baseHeight / 2 + middleHeight + topHeight
       candleGroup.add(candle)
+      this.createCandleLight(candle)
     }
     return candleGroup
-  }
-
-  createCandleLight(candleMesh: THREE.Mesh) {
-    var candleLight = new THREE.PointLight(0xffaa33, 1, 5, 2)
-    candleLight.position.set(0, candleHeight, 0)
-    candleLight.castShadow = true
-    candleMesh.add(candleLight)
-    var candleLight2 = new THREE.PointLight(0xffaa33, 1, 10, 2)
-    candleLight2.position.set(0, candleHeight + 1, 0)
-    candleLight2.castShadow = true
-    candleMesh.add(candleLight2)
-
-    candleMesh.add(this.flame())
-    candleMesh.add(this.flame())
   }
 
   animate(renderer: THREE.WebGLRenderer, controls: OrbitControls): void {
