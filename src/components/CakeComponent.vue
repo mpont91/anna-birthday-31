@@ -4,18 +4,20 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { createCakeScene } from '../assets/cake'
+import { Cake } from '../cake/cake'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let cake: Cake | null = null
 
 onMounted(() => {
   if (canvasRef.value) {
-    createCakeScene(canvasRef.value)
+    cake = new Cake(canvasRef.value)
+    cake.invoke()
   }
 })
 </script>
 
-<style>
+<style scoped>
 .cake-scene {
   position: absolute;
   top: 0;
