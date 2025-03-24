@@ -15,8 +15,8 @@ export function createCandles(flameMaterials: THREE.ShaderMaterial[]) {
   for (let i = 0; i < candleCount; i++) {
     const angle = (i / candleCount) * Math.PI * 2
     const candle = createCandle()
-    candle.position.x = Math.cos(angle) * radius
-    candle.position.z = Math.sin(angle) * radius
+    candle.position.x = Math.sin(angle) * radius
+    candle.position.z = Math.cos(angle) * radius
     candle.scale.set(0.3, 0.3, 0.3)
     candle.castShadow = false
     candle.position.y = baseHeight / 2 + middleHeight + topHeight

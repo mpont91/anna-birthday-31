@@ -47,7 +47,7 @@ export class Birthday {
       1,
       1000,
     )
-    camera.position.set(3, 5, 8).setLength(15)
+    camera.position.set(0, 5, 8).setLength(20)
 
     return camera
   }
