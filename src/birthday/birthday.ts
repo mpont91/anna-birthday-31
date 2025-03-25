@@ -15,6 +15,7 @@ import type { Animated } from './animated.ts'
 import { createDragon } from './dragon.ts'
 import { createBird } from './bird.ts'
 import { createDucks } from './ducks.ts'
+import { createRoom } from './room.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -37,6 +38,7 @@ export class Birthday {
 
     this.candles = createCandles()
 
+    const room: THREE.Object3D = createRoom()
     const light: THREE.DirectionalLight = createLight()
     const table: THREE.Mesh = createTable()
     const cake: THREE.Group = createCake()
@@ -48,6 +50,7 @@ export class Birthday {
     const ducks: Animated = await createDucks()
     const tori: THREE.Object3D = await createTori()
 
+    this.scene.add(room)
     this.scene.add(this.ambientLight)
     this.scene.add(light)
     this.scene.add(table)
