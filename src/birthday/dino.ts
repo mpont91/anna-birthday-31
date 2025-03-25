@@ -6,8 +6,8 @@ const dinoUrl: string = './dino.glb'
 export async function createDino(): Promise<THREE.Object3D> {
   const avatar = await loadModel(dinoUrl)
 
-  avatar.position.set(-10, -1, 0)
-  avatar.rotation.y = Math.PI
+  avatar.position.set(-5, -1, -5)
+  avatar.rotation.y = THREE.MathUtils.degToRad(145)
   avatar.scale.set(5, 5, 5)
 
   return avatar

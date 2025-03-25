@@ -16,6 +16,7 @@ import { Confetti } from './confetti.ts'
 import { isShaderMesh } from './mesh.ts'
 import { createDino } from './dino.ts'
 import { createBird } from './bird.ts'
+import { createTori } from './tori.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -32,6 +33,7 @@ export class Birthday {
   private confetti: Confetti[] = []
   private dino: THREE.Object3D = new THREE.Object3D()
   private bird: THREE.Object3D = new THREE.Object3D()
+  private tori: THREE.Object3D = new THREE.Object3D()
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     this.camera = this.createCamera()
@@ -48,6 +50,7 @@ export class Birthday {
     this.balloon = createBalloon31()
     this.dino = await createDino()
     this.bird = await createBird()
+    this.tori = await createTori()
 
     this.scene.add(this.ambientLight)
     this.scene.add(this.light)
@@ -57,6 +60,7 @@ export class Birthday {
     this.scene.add(this.balloon)
     this.scene.add(this.dino)
     this.scene.add(this.bird)
+    this.scene.add(this.tori)
 
     this.animate()
 
@@ -70,7 +74,7 @@ export class Birthday {
       1,
       1000,
     )
-    camera.position.set(0, 5, 8).setLength(20)
+    camera.position.set(0, 5, 8).setLength(30)
 
     return camera
   }
@@ -97,7 +101,7 @@ export class Birthday {
     controls.minPolarAngle = THREE.MathUtils.degToRad(60)
     controls.maxPolarAngle = THREE.MathUtils.degToRad(95)
     controls.minDistance = 7
-    controls.maxDistance = 20
+    controls.maxDistance = 40
     controls.autoRotate = false
     controls.autoRotateSpeed = 1
     controls.target.set(0, 2, 0)

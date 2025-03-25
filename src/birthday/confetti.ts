@@ -1,11 +1,11 @@
 import * as THREE from 'three'
 
 export class Confetti {
-  private geometry: THREE.BufferGeometry
-  private material: THREE.PointsMaterial
-  private points: THREE.Points
-  private velocities: THREE.Vector3[] = []
-  private gravity = new THREE.Vector3(0, -0.015, 0)
+  private readonly geometry: THREE.BufferGeometry
+  private readonly material: THREE.PointsMaterial
+  private readonly points: THREE.Points
+  private readonly velocities: THREE.Vector3[] = []
+  private readonly gravity = new THREE.Vector3(0, -0.015, 0)
   private lifetime = 150
 
   constructor(
