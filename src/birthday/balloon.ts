@@ -7,7 +7,7 @@ export function createBalloon31() {
     map: texture,
     transparent: true,
   })
-  const geometry = new THREE.PlaneGeometry(6, 6)
+  const geometry = new THREE.PlaneGeometry(25, 25)
 
   const balloonMesh = new THREE.Mesh(geometry, material)
   balloonMesh.position.set(0, 4, -25)

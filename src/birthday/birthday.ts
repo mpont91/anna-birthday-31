@@ -1,12 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
-import {
-  AmbientLight,
-  DirectionalLight,
-  PerspectiveCamera,
-  Scene,
-  WebGLRenderer,
-} from 'three'
+import { AmbientLight, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import { createAmbientLight, createLight, setAmbientLightTo } from './light.ts'
 import { createTable } from './table.ts'
 import { createCake } from './cake.ts'
@@ -14,11 +8,13 @@ import { createCandles } from './candle.ts'
 import { createBalloon31 } from './balloon.ts'
 import { Confetti } from './confetti.ts'
 import { isShaderMesh } from './mesh.ts'
-import { createDino } from './dino.ts'
-import { createBird } from './bird.ts'
+import { createAlien } from './alien.ts'
+import { createRobot } from './robot.ts'
 import { createTori } from './tori.ts'
 import type { Animated } from './animated.ts'
 import { createDragon } from './dragon.ts'
+import { createBird } from './bird.ts'
+import { createDucks } from './ducks.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -26,19 +22,8 @@ export class Birthday {
   private readonly renderer: WebGLRenderer
   private readonly controls: OrbitControls
   private ambientLight: AmbientLight = new THREE.AmbientLight()
-  private light: DirectionalLight = new DirectionalLight()
-  private table: THREE.Mesh = new THREE.Mesh()
-  private cake: THREE.Group = new THREE.Group()
   private candles: THREE.Group = new THREE.Group()
-  private balloon: THREE.Mesh = new THREE.Mesh()
   private confetti: Confetti[] = []
-  private dino: THREE.Object3D = new THREE.Object3D()
-  private bird: THREE.Object3D = new THREE.Object3D()
-  private dragon: Animated = {
-    avatar: new THREE.Object3D(),
-    mixer: new THREE.AnimationMixer(new THREE.Object3D()),
-  }
-  private tori: THREE.Object3D = new THREE.Object3D()
   private mixers: THREE.AnimationMixer[] = []
 
   constructor(private readonly canvas: HTMLCanvasElement) {
@@ -49,27 +34,40 @@ export class Birthday {
 
   public async invoke(): Promise<void> {
     this.ambientLight = createAmbientLight()
-    this.light = createLight()
-    this.table = createTable()
-    this.cake = createCake()
+
     this.candles = createCandles()
-    this.balloon = createBalloon31()
-    this.dino = await createDino()
-    this.bird = await createBird()
-    this.dragon = await createDragon()
-    this.tori = await createTori()
+
+    const light: THREE.DirectionalLight = createLight()
+    const table: THREE.Mesh = createTable()
+    const cake: THREE.Group = createCake()
+    const balloon: THREE.Mesh = createBalloon31()
+    const alien: Animated = await createAlien()
+    const robot: Animated = await createRobot()
+    const dragon: Animated = await createDragon()
+    const bird: Animated = await createBird()
+    const ducks: Animated = await createDucks()
+    const tori: THREE.Object3D = await createTori()
 
     this.scene.add(this.ambientLight)
-    this.scene.add(this.light)
-    this.scene.add(this.table)
-    this.scene.add(this.cake)
-    this.cake.add(this.candles)
-    this.scene.add(this.balloon)
-    this.scene.add(this.dino)
-    this.scene.add(this.bird)
-    this.scene.add(this.dragon.avatar)
-    this.mixers.push(this.dragon.mixer)
-    this.scene.add(this.tori)
+    this.scene.add(light)
+    this.scene.add(table)
+    this.scene.add(cake)
+    cake.add(this.candles)
+    this.scene.add(balloon)
+    this.scene.add(robot.avatar)
+    this.scene.add(alien.avatar)
+    this.scene.add(dragon.avatar)
+    this.scene.add(bird.avatar)
+    this.scene.add(ducks.avatar)
+    this.scene.add(tori)
+
+    this.mixers.push(
+      dragon.mixer,
+      robot.mixer,
+      alien.mixer,
+      bird.mixer,
+      ducks.mixer,
+    )
 
     this.animate()
 
