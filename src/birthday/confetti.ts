@@ -10,7 +10,7 @@ export class Confetti {
 
   constructor(
     private scene: THREE.Scene,
-    private count = 1000,
+    private count = 500,
   ) {
     const positions = new Float32Array(count * 3)
     const colors = new Float32Array(count * 3)
