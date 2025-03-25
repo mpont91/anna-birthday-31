@@ -26,3 +26,15 @@ export async function loadModel(url: string): Promise<THREE.Object3D> {
     )
   })
 }
+
+export async function loadGLTF(url: string): Promise<GLTF> {
+  return new Promise((resolve, reject) => {
+    const loader = new GLTFLoader()
+    loader.load(
+      url,
+      (gltf) => resolve(gltf),
+      undefined,
+      (err) => reject(err),
+    )
+  })
+}

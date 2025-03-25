@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import { loadModel } from './model.ts'
 
-const toriUrl: string = './tori.glb'
+const url: string = './tori.glb'
 
 export async function createTori(): Promise<THREE.Object3D> {
-  const avatar = await loadModel(toriUrl)
+  const avatar = await loadModel(url)
 
   avatar.position.set(0, 3.5, -12)
   avatar.rotation.y = THREE.MathUtils.degToRad(225)

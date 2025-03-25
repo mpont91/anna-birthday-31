@@ -1,10 +1,10 @@
 import * as THREE from 'three'
 import { loadModel } from './model.ts'
 
-const dinoUrl: string = './dino.glb'
+const url: string = './dino.glb'
 
 export async function createDino(): Promise<THREE.Object3D> {
-  const avatar = await loadModel(dinoUrl)
+  const avatar = await loadModel(url)
 
   avatar.position.set(-5, -1, -5)
   avatar.rotation.y = THREE.MathUtils.degToRad(145)

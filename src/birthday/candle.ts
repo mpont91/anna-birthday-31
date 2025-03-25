@@ -9,7 +9,7 @@ const baseHeight = 2 // Height of the cake base
 const middleHeight = 1.25 // Height of the cake middle
 const topHeight = 1 // Height of the cake top
 
-export function createCandles(flameMaterials: THREE.ShaderMaterial[]) {
+export function createCandles() {
   const candleGroup = new THREE.Group()
   const radius = 1
   for (let i = 0; i < candleCount; i++) {
@@ -21,7 +21,7 @@ export function createCandles(flameMaterials: THREE.ShaderMaterial[]) {
     candle.castShadow = false
     candle.position.y = baseHeight / 2 + middleHeight + topHeight
     candleGroup.add(candle)
-    createCandleLight(candle, flameMaterials)
+    createCandleLight(candle)
   }
   return candleGroup
 }
@@ -39,12 +39,10 @@ function getFlameMaterial(isFrontSide: boolean) {
   })
 }
 
-function flame(flameMaterials: THREE.ShaderMaterial[]) {
+function flame() {
   const flameGeometry = new THREE.SphereGeometry(0.5, 12, 12)
   flameGeometry.translate(0, 0.5, 0)
   const flameMaterial = getFlameMaterial(true)
-
-  flameMaterials.push(flameMaterial)
 
   const flame = new THREE.Mesh(flameGeometry, flameMaterial)
   flame.position.set(0.06, candleHeight, 0.06)
@@ -113,10 +111,7 @@ function createCandle() {
   return caseMesh
 }
 
-function createCandleLight(
-  candleMesh: THREE.Mesh,
-  flameMaterials: THREE.ShaderMaterial[],
-) {
+function createCandleLight(candleMesh: THREE.Mesh) {
   const candleLight = new THREE.PointLight(0xffaa33, 1, 5, 2)
   candleLight.position.set(0, candleHeight, 0)
   candleLight.castShadow = true
@@ -125,5 +120,5 @@ function createCandleLight(
   candleLight2.position.set(0, candleHeight + 1, 0)
   candleLight2.castShadow = true
   candleMesh.add(candleLight2)
-  candleMesh.add(flame(flameMaterials))
+  candleMesh.add(flame())
 }

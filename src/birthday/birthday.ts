@@ -17,6 +17,8 @@ import { isShaderMesh } from './mesh.ts'
 import { createDino } from './dino.ts'
 import { createBird } from './bird.ts'
 import { createTori } from './tori.ts'
+import type { Animated } from './animated.ts'
+import { createDragon } from './dragon.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -28,12 +30,16 @@ export class Birthday {
   private table: THREE.Mesh = new THREE.Mesh()
   private cake: THREE.Group = new THREE.Group()
   private candles: THREE.Group = new THREE.Group()
-  private flameMaterials: THREE.ShaderMaterial[] = []
   private balloon: THREE.Mesh = new THREE.Mesh()
   private confetti: Confetti[] = []
   private dino: THREE.Object3D = new THREE.Object3D()
   private bird: THREE.Object3D = new THREE.Object3D()
+  private dragon: Animated = {
+    avatar: new THREE.Object3D(),
+    mixer: new THREE.AnimationMixer(new THREE.Object3D()),
+  }
   private tori: THREE.Object3D = new THREE.Object3D()
+  private mixers: THREE.AnimationMixer[] = []
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     this.camera = this.createCamera()
@@ -46,10 +52,11 @@ export class Birthday {
     this.light = createLight()
     this.table = createTable()
     this.cake = createCake()
-    this.candles = createCandles(this.flameMaterials)
+    this.candles = createCandles()
     this.balloon = createBalloon31()
     this.dino = await createDino()
     this.bird = await createBird()
+    this.dragon = await createDragon()
     this.tori = await createTori()
 
     this.scene.add(this.ambientLight)
@@ -60,6 +67,8 @@ export class Birthday {
     this.scene.add(this.balloon)
     this.scene.add(this.dino)
     this.scene.add(this.bird)
+    this.scene.add(this.dragon.avatar)
+    this.mixers.push(this.dragon.mixer)
     this.scene.add(this.tori)
 
     this.animate()
@@ -111,16 +120,13 @@ export class Birthday {
   }
 
   animate(): void {
-    const clock: THREE.Clock = new THREE.Clock()
-
+    const clock = new THREE.Clock()
     const render = (): void => {
       requestAnimationFrame(render)
 
-      const elapsedTime: number = clock.getElapsedTime()
+      const delta = clock.getDelta()
 
-      // for (const material of this.flameMaterials) {
-      //   material.uniforms.time.value = elapsedTime
-      // }
+      this.mixers.forEach((m) => m.update(delta))
 
       for (const explosion of this.confetti) {
         explosion.update()
