@@ -118,9 +118,9 @@ export class Birthday {
 
       const elapsedTime: number = clock.getElapsedTime()
 
-      for (const material of this.flameMaterials) {
-        material.uniforms.time.value = elapsedTime
-      }
+      // for (const material of this.flameMaterials) {
+      //   material.uniforms.time.value = elapsedTime
+      // }
 
       for (const explosion of this.confetti) {
         explosion.update()
