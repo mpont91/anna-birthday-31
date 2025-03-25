@@ -13,6 +13,9 @@ import { createCake } from './cake.ts'
 import { createCandles } from './candle.ts'
 import { createBalloon31 } from './balloon.ts'
 import { Confetti } from './confetti.ts'
+import { isShaderMesh } from './mesh.ts'
+import { createDino } from './dino.ts'
+import { createBird } from './bird.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -27,6 +30,8 @@ export class Birthday {
   private flameMaterials: THREE.ShaderMaterial[] = []
   private balloon: THREE.Mesh = new THREE.Mesh()
   private confetti: Confetti[] = []
+  private dino: THREE.Object3D = new THREE.Object3D()
+  private bird: THREE.Object3D = new THREE.Object3D()
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     this.camera = this.createCamera()
@@ -34,13 +39,15 @@ export class Birthday {
     this.controls = this.createControls()
   }
 
-  public invoke(): void {
+  public async invoke(): Promise<void> {
     this.ambientLight = createAmbientLight()
     this.light = createLight()
     this.table = createTable()
     this.cake = createCake()
     this.candles = createCandles(this.flameMaterials)
     this.balloon = createBalloon31()
+    this.dino = await createDino()
+    this.bird = await createBird()
 
     this.scene.add(this.ambientLight)
     this.scene.add(this.light)
@@ -48,6 +55,8 @@ export class Birthday {
     this.scene.add(this.cake)
     this.cake.add(this.candles)
     this.scene.add(this.balloon)
+    this.scene.add(this.dino)
+    this.scene.add(this.bird)
 
     this.animate()
 
@@ -139,7 +148,7 @@ export class Birthday {
   }
 
   extinguishCandle(candle: THREE.Object3D, speed: number): void {
-    const flames = candle.children.filter(this.isShaderMesh)
+    const flames = candle.children.filter(isShaderMesh)
 
     const lights = candle.children.filter(
       (child): child is THREE.PointLight => child instanceof THREE.PointLight,
@@ -182,7 +191,7 @@ export class Birthday {
   }
 
   lightCandle(candle: THREE.Object3D, speed: number): void {
-    const flames = candle.children.filter(this.isShaderMesh)
+    const flames = candle.children.filter(isShaderMesh)
 
     const lights = candle.children.filter(
       (child): child is THREE.PointLight => child instanceof THREE.PointLight,
@@ -214,13 +223,5 @@ export class Birthday {
         })
       }
     }, 30)
-  }
-
-  isShaderMesh(
-    obj: unknown,
-  ): obj is THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial> {
-    return (
-      obj instanceof THREE.Mesh && obj.material instanceof THREE.ShaderMaterial
-    )
   }
 }
