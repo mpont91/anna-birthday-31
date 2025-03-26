@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { AmbientLight, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
 import { createAmbientLight, createLight, setAmbientLightTo } from './light.ts'
-import { createTable } from './table.ts'
 import { createCake } from './cake.ts'
 import { createCandles } from './candle.ts'
 import { createBalloons } from './balloon.ts'
@@ -16,6 +15,7 @@ import { createDragon } from './dragon.ts'
 import { createBird } from './bird.ts'
 import { createDucks } from './ducks.ts'
 import { createRoom } from './room.ts'
+import { createTable } from './table.ts'
 
 export class Birthday {
   private readonly scene: Scene = new THREE.Scene()
@@ -40,7 +40,7 @@ export class Birthday {
 
     const room: THREE.Object3D = createRoom()
     const light: THREE.DirectionalLight = createLight()
-    const table: THREE.Mesh = createTable()
+    const table: THREE.Object3D = await createTable()
     const cake: THREE.Group = createCake()
     const balloons: THREE.Group = createBalloons()
     const alien: Animated = await createAlien()
