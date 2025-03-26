@@ -32,8 +32,9 @@ import LoaderComponent from './LoaderComponent.vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 let birthday: Birthday | null = null
+const isDev = import.meta.env.DEV
+const isLoading = ref<boolean>(!isDev)
 const countdown = ref<number>(10)
-const isLoading = ref<boolean>(true)
 const canBlow = ref<boolean>(true)
 const isDisabled = ref<boolean>(false)
 const isSceneVisible = ref<boolean>(false)
@@ -42,23 +43,28 @@ onMounted(async () => {
   if (canvasRef.value) {
     birthday = new Birthday(canvasRef.value)
 
-    const countdownInterval = setInterval(() => {
-      if (countdown.value > 0) {
-        countdown.value--
-      }
-    }, 1000)
+    if (!isDev) {
+      const countdownInterval = setInterval(() => {
+        if (countdown.value > 0) {
+          countdown.value--
+        }
+      }, 1000)
 
-    await Promise.all([
-      birthday.invoke(),
-      new Promise((resolve) => setTimeout(resolve, 11000)),
-    ])
+      await Promise.all([
+        birthday.invoke(),
+        new Promise((resolve) => setTimeout(resolve, 11000)),
+      ])
 
-    clearInterval(countdownInterval)
-    isLoading.value = false
+      clearInterval(countdownInterval)
+      isLoading.value = false
 
-    setTimeout(() => {
+      setTimeout(() => {
+        isSceneVisible.value = true
+      }, 50)
+    } else {
+      await birthday.invoke()
       isSceneVisible.value = true
-    }, 50)
+    }
   }
 })
 

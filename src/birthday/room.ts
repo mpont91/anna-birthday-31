@@ -22,10 +22,16 @@ export function createRoom(): THREE.Group {
     roughness: 0.75,
   })
 
+  const ceilMaterial: MeshStandardMaterial = new THREE.MeshStandardMaterial({
+    map: wallTexture,
+    metalness: 0.15,
+    roughness: 0.75,
+  })
+
   const wallThickness = 0.1
-  const roomWidth = 70
-  const roomHeight = 70
-  const roomDepth = 70
+  const roomWidth = 80
+  const roomHeight = 35
+  const roomDepth = 80
   const floorLevel = -15
 
   const floor = new THREE.Mesh(
@@ -35,6 +41,14 @@ export function createRoom(): THREE.Group {
   floor.position.y = floorLevel
   floor.receiveShadow = true
   group.add(floor)
+
+  const ceiling = new THREE.Mesh(
+    new THREE.BoxGeometry(roomWidth, wallThickness, roomDepth),
+    ceilMaterial,
+  )
+  ceiling.position.y = floorLevel + roomHeight
+  ceiling.receiveShadow = false
+  group.add(ceiling)
 
   const backWall = new THREE.Mesh(
     new THREE.BoxGeometry(roomWidth, roomHeight, wallThickness),

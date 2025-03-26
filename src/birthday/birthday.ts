@@ -5,7 +5,7 @@ import { createAmbientLight, createLight, setAmbientLightTo } from './light.ts'
 import { createTable } from './table.ts'
 import { createCake } from './cake.ts'
 import { createCandles } from './candle.ts'
-import { createBalloon31 } from './balloon.ts'
+import { createBalloons } from './balloon.ts'
 import { Confetti } from './confetti.ts'
 import { isShaderMesh } from './mesh.ts'
 import { createAlien } from './alien.ts'
@@ -42,7 +42,7 @@ export class Birthday {
     const light: THREE.DirectionalLight = createLight()
     const table: THREE.Mesh = createTable()
     const cake: THREE.Group = createCake()
-    const balloon: THREE.Mesh = createBalloon31()
+    const balloons: THREE.Group = createBalloons()
     const alien: Animated = await createAlien()
     const robot: Animated = await createRobot()
     const dragon: Animated = await createDragon()
@@ -56,7 +56,7 @@ export class Birthday {
     this.scene.add(table)
     this.scene.add(cake)
     cake.add(this.candles)
-    this.scene.add(balloon)
+    this.scene.add(balloons)
     this.scene.add(robot.avatar)
     this.scene.add(alien.avatar)
     this.scene.add(dragon.avatar)
