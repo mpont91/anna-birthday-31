@@ -6,9 +6,9 @@ const middleRadius = 2 // Middle radius of the cake
 const middleHeight = 1.25 // Height of the cake middle
 const topRadius = 1.5 // Top radius of the cake
 const topHeight = 1 // Height of the cake top
-const chocolateDarkImageUrl: string = './chocolate-dark.png'
-const chocolateBrownImageUrl: string = './chocolate-brown.png'
-const chocolateWhiteImageUrl: string = './chocolate-white.png'
+const chocolateDarkImageUrl: string = './chocolate-dark.webp'
+const chocolateBrownImageUrl: string = './chocolate-brown.webp'
+const chocolateWhiteImageUrl: string = './chocolate-white.webp'
 
 export function createCake() {
   const cakeGroup = new THREE.Group()

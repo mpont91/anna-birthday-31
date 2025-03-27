@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const balloonImageUrl: string = './balloon-31.png'
+const balloonImageUrl: string = './balloon-31.webp'
 export function createBalloons() {
   const group: THREE.Group = new THREE.Group()
 

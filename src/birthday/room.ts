@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 import { MeshStandardMaterial, Texture, TextureLoader } from 'three'
 
-const floorImageUrl: string = './floor.png'
-const wallImageUrl: string = './wall.png'
+const floorImageUrl: string = './floor.webp'
+const wallImageUrl: string = './wall.webp'
 
 export function createRoom(): THREE.Group {
   const group = new THREE.Group()
@@ -30,7 +30,7 @@ export function createRoom(): THREE.Group {
 
   const wallThickness = 0.1
   const roomWidth = 80
-  const roomHeight = 35
+  const roomHeight = 37
   const roomDepth = 80
   const floorLevel = -15
 
