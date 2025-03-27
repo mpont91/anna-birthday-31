@@ -159,18 +159,20 @@ export class Birthday {
 
   extinguishCandle(candle: THREE.Object3D, speed: number): void {
     const flames = candle.children.filter(isShaderMesh)
-
     const lights = candle.children.filter(
       (child): child is THREE.PointLight => child instanceof THREE.PointLight,
     )
 
     let progress = 0
-    const extinguishInterval = setInterval(() => {
-      progress += 0.02 * speed
+    let startTime: number | null = null
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = (timestamp - startTime) / 1000
+      progress = elapsed * speed
       const factor = 1 - progress
 
       if (progress >= 1) {
-        clearInterval(extinguishInterval)
         flames.forEach((flame) => {
           flame.visible = false
           flame.material.opacity = 0
@@ -183,12 +185,14 @@ export class Birthday {
           flame.material.opacity = factor
           flame.scale.set(factor, factor, factor)
         })
-
         lights.forEach((light) => {
           light.intensity = factor
         })
+        requestAnimationFrame(animate)
       }
-    }, 30)
+    }
+
+    requestAnimationFrame(animate)
   }
 
   igniteCandles(): void {
@@ -202,19 +206,21 @@ export class Birthday {
 
   lightCandle(candle: THREE.Object3D, speed: number): void {
     const flames = candle.children.filter(isShaderMesh)
-
     const lights = candle.children.filter(
       (child): child is THREE.PointLight => child instanceof THREE.PointLight,
     )
 
-    let progress = 0
-    const lightInterval = setInterval(() => {
-      progress += 0.02 * speed
+    let startTime: number | null = null
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = (timestamp - startTime) / 1000
+      const progress = elapsed * speed
       const factor = Math.min(progress, 1)
 
       if (progress >= 1) {
-        clearInterval(lightInterval)
         flames.forEach((flame) => {
+          flame.visible = true
           flame.material.opacity = 1
           flame.scale.set(1, 1, 1)
         })
@@ -227,11 +233,13 @@ export class Birthday {
           flame.material.opacity = factor
           flame.scale.set(factor, factor, factor)
         })
-
         lights.forEach((light) => {
           light.intensity = factor
         })
+        requestAnimationFrame(animate)
       }
-    }, 30)
+    }
+
+    requestAnimationFrame(animate)
   }
 }
