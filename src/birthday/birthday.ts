@@ -92,7 +92,7 @@ export class Birthday {
   createRenderer(): THREE.WebGLRenderer {
     const renderer: WebGLRenderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
-      antialias: true,
+      antialias: false,
     })
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setClearColor(0x101005)
