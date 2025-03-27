@@ -96,8 +96,7 @@ export class Birthday {
     })
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setClearColor(0x101005)
-    renderer.shadowMap.enabled = true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    renderer.shadowMap.enabled = false
 
     return renderer
   }

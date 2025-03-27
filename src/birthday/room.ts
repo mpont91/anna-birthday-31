@@ -39,7 +39,6 @@ export function createRoom(): THREE.Group {
     floorMaterial,
   )
   floor.position.y = floorLevel
-  floor.receiveShadow = true
   group.add(floor)
 
   const ceiling = new THREE.Mesh(
@@ -47,7 +46,6 @@ export function createRoom(): THREE.Group {
     ceilMaterial,
   )
   ceiling.position.y = floorLevel + roomHeight
-  ceiling.receiveShadow = false
   group.add(ceiling)
 
   const backWall = new THREE.Mesh(

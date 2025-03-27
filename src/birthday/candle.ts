@@ -18,7 +18,6 @@ export function createCandles() {
     candle.position.x = Math.sin(angle) * radius
     candle.position.z = Math.cos(angle) * radius
     candle.scale.set(0.3, 0.3, 0.3)
-    candle.castShadow = false
     candle.position.y = baseHeight / 2 + middleHeight + topHeight
     candleGroup.add(candle)
     createCandleLight(candle)
@@ -59,7 +58,6 @@ function createCandle() {
   const caseGeometry = new THREE.LatheGeometry(casePath.getPoints(), 64)
   const caseMaterial = new THREE.MeshStandardMaterial({ color: 0xff4500 }) // Orange-red color
   const caseMesh = new THREE.Mesh(caseGeometry, caseMaterial)
-  caseMesh.castShadow = true
 
   // top part of the candle
   const topGeometry = new THREE.CylinderGeometry(0.2, candleRadius, 0.1, 32) // Use baseRadius for the top base
@@ -114,11 +112,9 @@ function createCandle() {
 function createCandleLight(candleMesh: THREE.Mesh) {
   const candleLight = new THREE.PointLight(0xffaa33, 1, 5, 2)
   candleLight.position.set(0, candleHeight, 0)
-  candleLight.castShadow = true
   candleMesh.add(candleLight)
   const candleLight2 = new THREE.PointLight(0xffaa33, 1, 10, 2)
   candleLight2.position.set(0, candleHeight + 1, 0)
-  candleLight2.castShadow = true
   candleMesh.add(candleLight2)
   candleMesh.add(flame())
 }
